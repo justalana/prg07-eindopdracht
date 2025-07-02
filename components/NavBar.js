@@ -9,11 +9,11 @@ export default function NavBar() {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Map')}>
-                <Icon name="map" size={32} color="#000" />
+                <Icon name="map" size={32} color="#1d140d" />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
-                <Icon name="home" size={32} color="#000" />
+                <Icon name="home" size={32} color="#1d140d" />
             </TouchableOpacity>
         </View>
     );

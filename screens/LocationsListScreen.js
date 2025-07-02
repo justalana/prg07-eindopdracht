@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         borderBottomWidth: 1,
-        borderColor: '#ddd',
-        backgroundColor: '#fff',
+        borderColor: '#79a78b',
+        backgroundColor: '#79a78b',
     },
     backButton: {
         flexDirection: 'row',
@@ -97,12 +97,13 @@ const styles = StyleSheet.create({
     backText: {
         marginLeft: 6,
         fontSize: 16,
-        color: '#333',
+        color: '#1d140d',
     },
     container: {
         padding: 16,
         paddingBottom: 40,
         marginBottom: 40,
+        backgroundColor: '#70665a'
     },
     itemContainer: {
         backgroundColor: '#fff',

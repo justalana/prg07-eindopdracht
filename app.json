@@ -26,7 +26,17 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "apiUrl": "https://gist.githubusercontent.com/justalana/2f7461e51a429feed25542e6626bbe00/raw/651a11599b7356ecf98aa9cd80ecdacf5f7a7449/libraries.json"
+      "apiUrl": "https://gist.githubusercontent.com/justalana/2f7461e51a429feed25542e6626bbe00/raw/651a11599b7356ecf98aa9cd80ecdacf5f7a7449/libraries.json",
+      "eas": {
+        "projectId": "9ca1ab2b-b8d0-4498-a384-38e97502ac10"
+      }
+    },
+    "owner": "just_alanaaa",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9ca1ab2b-b8d0-4498-a384-38e97502ac10"
     }
   }
 }

@@ -16,9 +16,10 @@ export default function HomeScreen() {
             />
 
             <ScrollView contentContainerStyle={styles.container}>
-                <Text style={styles.title}>📚 Free Little Libraries</Text>
-                <Text style={styles.subtitle}>Discover, share & enjoy community book spots near you!</Text>
-
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Welkom!</Text>
+                    <Text style={styles.subtitle}>Ontdek hier de locaties van Free Little Libraries bij jou in de buurt</Text>
+                </View>
                 <NavBar/>
             </ScrollView>
         </SafeAreaView>
@@ -31,8 +32,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 16,
     },
+    titleContainer: {
+        backgroundColor: 'rgba(209, 176, 145, 0.7)',
+        borderRadius: 10,
+        padding: 15,
+        alignItems: "center",
+    },
     title: {
         fontSize: 28,
+        color: '#1d140d',
         fontWeight: 'bold',
         marginVertical: 12,
     },
@@ -40,18 +48,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 24,
-        color: '#555',
-    },
-    button: {
-        backgroundColor: '#4a90e2',
-        padding: 14,
-        borderRadius: 10,
-        marginVertical: 8,
-        width: '100%',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
+        color: '#1d140d',
     },
 });

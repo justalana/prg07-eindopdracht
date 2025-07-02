@@ -15,7 +15,6 @@ export const LittleLibraries = ({ children }) => {
             const cached = await AsyncStorage.getItem("libraries");
             if (cached) {
                 setLibraries(JSON.parse(cached));
-                console.log("📦 Offline data geladen uit AsyncStorage");
             }
         } catch (e) {
             console.error("Fout bij laden van cache:", e);
@@ -35,10 +34,9 @@ export const LittleLibraries = ({ children }) => {
 
             setLibraries(jsonData.libraries);
             await AsyncStorage.setItem("libraries", JSON.stringify(jsonData.libraries));
-            console.log("🌐 Data opgehaald van de server");
         } catch (e) {
             console.error("Fout bij ophalen van online data:", e.message);
-            await loadFromCache(); // fallback bij fout
+            await loadFromCache();
         }
     };
 
@@ -50,7 +48,7 @@ export const LittleLibraries = ({ children }) => {
             if (state.isConnected) {
                 await fetchLibraries();
             } else {
-                console.log("🔌 Geen internet, blijf bij offline data");
+                console.log("Geen internet, blijf bij offline data");
             }
         };
 

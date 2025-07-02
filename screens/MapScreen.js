@@ -8,12 +8,10 @@ import { LibrariesContext } from '../components/Libraries';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-
 export default function MapScreen() {
     const navigation = useNavigation();
     const route = useRoute();
     const mapRef = useRef(null);
-
 
     const [currentLocation, setCurrentLocation] = useState(null);
     const [initialRegion, setInitialRegion] = useState(null);
@@ -39,8 +37,6 @@ export default function MapScreen() {
             return () => clearTimeout(timeout);
         }
     }, [route.params?.selectedLibrary, initialRegion]);
-
-
 
     useEffect(() => {
         const requestPermission = async () => {
@@ -84,7 +80,7 @@ export default function MapScreen() {
                     onPress={() => navigation.navigate('LocationsList')}
                     style={styles.headerButton}
                 >
-                    <Icon name="list" size={24} color="#333" />
+                    <Icon name="list" size={24} color="#1d140d" />
                     <Text style={styles.headerButtonText}>Lijst</Text>
                 </TouchableOpacity>
             </View>
@@ -115,7 +111,7 @@ export default function MapScreen() {
                     </MapView>
                 ) : (
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text>📍 Locatie ophalen...</Text>
+                        <Text>Locatie ophalen...</Text>
                     </View>
                 )}
             </View>
@@ -161,7 +157,7 @@ const styles = StyleSheet.create({
     headerButtonText: {
         marginLeft: 6,
         fontSize: 16,
-        color: '#333',
+        color: '#1d140d',
         fontWeight: '500',
     },
 });
