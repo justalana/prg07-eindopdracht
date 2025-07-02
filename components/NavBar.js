@@ -15,6 +15,10 @@ export default function NavBar() {
             <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
                 <Icon name="home" size={32} color="#1d140d" />
             </TouchableOpacity>
+
+            <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Settings')}>
+                <Icon name="settings" size={32} color="#1d140d" />
+            </TouchableOpacity>
         </View>
     );
 }
