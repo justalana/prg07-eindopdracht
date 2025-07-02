@@ -1,12 +1,15 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import NavBar from "../components/NavBar";
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { LibrariesContext } from '../contexts/Libraries';
+import { LibrariesContext } from '../components/Libraries';
+import Icon from 'react-native-vector-icons/Feather';
+import {useNavigation} from "@react-navigation/native";
 
 export default function MapScreen() {
+    const navigation = useNavigation();
     const [currentLocation, setCurrentLocation] = useState(null);
     const [initialRegion, setInitialRegion] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -50,14 +53,26 @@ export default function MapScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <View style={styles.headerContainer}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('LocationsList')}
+                    style={styles.headerButton}
+                >
+                    <Icon name="list" size={24} color="#333" />
+                    <Text style={styles.headerButtonText}>Lijst</Text>
+                </TouchableOpacity>
+            </View>
+
             <View style={styles.container}>
                 {initialRegion ? (
                     <MapView
                         style={styles.map}
                         showsUserLocation={true}
-                        initialRegion={initialRegion}
+                        followsUserLocation={true}
+                        region={currentLocation}
                     >
-                        {libraries.length > 0 &&
+
+                    {libraries.length > 0 &&
                             libraries.map((item) => (
                                 <Marker
                                     key={item.id}
@@ -93,5 +108,33 @@ const styles = StyleSheet.create({
     map: {
         width: '100%',
         height: '100%',
+    },
+    headerContainer: {
+        position: 'absolute',
+        top: 40,
+        left: 16,
+        right: 16,
+        zIndex: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    headerButton: {
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        borderRadius: 8,
+        padding: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    headerButtonText: {
+        marginLeft: 6,
+        fontSize: 16,
+        color: '#333',
+        fontWeight: '500',
     },
 });
