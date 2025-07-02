@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 
-export default function AppNavigator() {
+export default function NavBar() {
     const navigation = useNavigation();
 
     return (
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         zIndex: 999,
     },
     navItem: {
-        flex: 1, // zorgt dat elke knop 1/4 inneemt nu
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',

@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
-import MapView from 'react-native-maps';
+import React, {useState, useEffect, useRef, useContext} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
-import AppNavigator from "../components/AppNavigator";
+import NavBar from "../components/NavBar";
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { LibrariesContext } from '../contexts/Libraries';
 
 export default function MapScreen() {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [initialRegion, setInitialRegion] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+    const { libraries } = useContext(LibrariesContext)
     const watchId = useRef();
 
     useEffect(() => {
@@ -44,27 +46,41 @@ export default function MapScreen() {
         };
 
         requestPermission();
-
-        return () => {
-            if (watchId.current) watchId.current.remove();
-        };
     }, []);
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                {initialRegion && (
+                {initialRegion ? (
                     <MapView
                         style={styles.map}
                         showsUserLocation={true}
-                        followsUserLocation={true}
-                        region={currentLocation}
-                    />
+                        initialRegion={initialRegion}
+                    >
+                        {libraries.length > 0 &&
+                            libraries.map((item) => (
+                                <Marker
+                                    key={item.id}
+                                    coordinate={{
+                                        latitude: item.latitude,
+                                        longitude: item.longitude,
+                                    }}
+                                    title={item.name}
+                                    description={item.address}
+                                    pinColor="red"
+                                />
+                            ))}
+                    </MapView>
+                ) : (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text>📍 Locatie ophalen...</Text>
+                    </View>
                 )}
-                <AppNavigator/>
             </View>
+            <NavBar />
         </SafeAreaView>
     );
+
 }
 
 const styles = StyleSheet.create({

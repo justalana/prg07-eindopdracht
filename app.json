@@ -24,6 +24,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "apiUrl": "https://gist.githubusercontent.com/justalana/2f7461e51a429feed25542e6626bbe00/raw/651a11599b7356ecf98aa9cd80ecdacf5f7a7449/libraries.json"
     }
   }
 }
