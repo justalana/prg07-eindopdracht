@@ -6,15 +6,41 @@ import NavBar from "../components/NavBar";
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { LibrariesContext } from '../components/Libraries';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 
 export default function MapScreen() {
     const navigation = useNavigation();
+    const route = useRoute();
+    const mapRef = useRef(null);
+
+
     const [currentLocation, setCurrentLocation] = useState(null);
     const [initialRegion, setInitialRegion] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const { libraries } = useContext(LibrariesContext)
     const watchId = useRef();
+
+    useEffect(() => {
+        if (route.params?.selectedLibrary && initialRegion && mapRef.current) {
+            const timeout = setTimeout(() => {
+                const { latitude, longitude } = route.params.selectedLibrary;
+
+                const region = {
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                };
+
+                mapRef.current.animateToRegion(region, 1000);
+            }, 500); // wacht even tot MapView zeker gerenderd is
+
+            return () => clearTimeout(timeout);
+        }
+    }, [route.params?.selectedLibrary, initialRegion]);
+
+
 
     useEffect(() => {
         const requestPermission = async () => {
@@ -65,12 +91,13 @@ export default function MapScreen() {
 
             <View style={styles.container}>
                 {initialRegion ? (
-                    <MapView
-                        style={styles.map}
-                        showsUserLocation={true}
-                        followsUserLocation={true}
-                        region={currentLocation}
-                    >
+                        <MapView
+                            ref={mapRef}
+                            style={styles.map}
+                            showsUserLocation={true}
+                            followsUserLocation={true}
+                            initialRegion={initialRegion}
+                        >
 
                     {libraries.length > 0 &&
                             libraries.map((item) => (

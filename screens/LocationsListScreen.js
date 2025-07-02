@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LibrariesContext } from '../components/Libraries';
-import { useNavigation } from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {LibrariesContext} from '../components/Libraries';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NavBar from "../components/NavBar";
 
 export default function LocationsListScreen() {
-    const { libraries } = useContext(LibrariesContext);
+    const {libraries} = useContext(LibrariesContext);
     const navigation = useNavigation();
     const [favorites, setFavorites] = useState([]);
 
@@ -43,7 +43,7 @@ export default function LocationsListScreen() {
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Icon name="arrow-left" size={24} color="#333" />
+                    <Icon name="arrow-left" size={24} color="#333"/>
                     <Text style={styles.backText}>Terug naar kaart</Text>
                 </TouchableOpacity>
             </View>
@@ -53,9 +53,13 @@ export default function LocationsListScreen() {
                     const isFavorite = favorites.includes(item.id);
 
                     return (
-                        <View key={item.id} style={styles.itemContainer}>
+                        <TouchableOpacity
+                            key={item.id}
+                            style={styles.itemContainer}
+                            onPress={() => navigation.navigate('Map', {selectedLibrary: item})}
+                        >
                             <View style={styles.itemHeader}>
-                                <View style={{ flex: 1 }}>
+                                <View style={{flex: 1}}>
                                     <Text style={styles.name}>{item.name}</Text>
                                     <Text style={styles.address}>{item.address}</Text>
                                 </View>
@@ -67,11 +71,11 @@ export default function LocationsListScreen() {
                                     />
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     );
                 })}
             </ScrollView>
-            <NavBar />
+            <NavBar/>
         </SafeAreaView>
     );
 
@@ -106,7 +110,7 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 12,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
+        shadowOffset: {width: 0, height: 1},
         shadowOpacity: 0.05,
         shadowRadius: 2,
         elevation: 2,
