@@ -7,54 +7,54 @@ const url = Constants.expoConfig?.extra?.apiUrl;
 
 export const LibrariesContext = createContext({ libraries: [] });
 
-export const LittleLibraries = ({children}) => {
-    const [libraries, setLibraries] = useState([])
+export const LittleLibraries = ({ children }) => {
+    const [libraries, setLibraries] = useState([]);
+
+    const loadFromCache = async () => {
+        try {
+            const cached = await AsyncStorage.getItem("libraries");
+            if (cached) {
+                setLibraries(JSON.parse(cached));
+                console.log("📦 Offline data geladen uit AsyncStorage");
+            }
+        } catch (e) {
+            console.error("Fout bij laden van cache:", e);
+        }
+    };
 
     const fetchLibraries = async () => {
         try {
-            const result = await fetch(url, {
-                headers: {
-                    'Accept': 'application/json'
-                }
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json' }
             });
 
-            if (!result.ok) throw new Error(`HTTP Error: ${result.status}`);
-            const jsonData = await result.json();
-            // console.log("Parsed JSON:", jsonData);
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
+            const jsonData = await response.json();
             if (!jsonData.libraries) throw new Error("Geen 'libraries' gevonden!");
+
             setLibraries(jsonData.libraries);
             await AsyncStorage.setItem("libraries", JSON.stringify(jsonData.libraries));
+            console.log("🌐 Data opgehaald van de server");
         } catch (e) {
-            console.error("Fout bij ophalen data:", e.message);
-
-            try {
-                const cached = await AsyncStorage.getItem("libraries");
-                if (cached) {
-                    setLibraries(JSON.parse(cached));
-                    console.log("Offline data geladen uit AsyncStorage");
-                }
-            } catch (storageError) {
-                console.error("Fout bij lezen van cache:", storageError);
-            }
+            console.error("Fout bij ophalen van online data:", e.message);
+            await loadFromCache(); // fallback bij fout
         }
     };
 
     useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener(state => {
-            if (state.isConnected) {
-                fetchLibraries();
-            } else {
-                (async () => {
-                    const cached = await AsyncStorage.getItem("libraries");
-                    if (cached) {
-                        setLibraries(JSON.parse(cached));
-                    }
-                })();
-            }
-        });
+        const checkConnectionAndLoad = async () => {
+            await loadFromCache();
 
-        return () => unsubscribe();
+            const state = await NetInfo.fetch();
+            if (state.isConnected) {
+                await fetchLibraries();
+            } else {
+                console.log("🔌 Geen internet, blijf bij offline data");
+            }
+        };
+
+        checkConnectionAndLoad();
     }, []);
 
     return (
@@ -62,4 +62,4 @@ export const LittleLibraries = ({children}) => {
             {children}
         </LibrariesContext.Provider>
     );
-}
+};

@@ -34,7 +34,7 @@ export default function MapScreen() {
                 };
 
                 mapRef.current.animateToRegion(region, 1000);
-            }, 500); // wacht even tot MapView zeker gerenderd is
+            }, 500);
 
             return () => clearTimeout(timeout);
         }
@@ -109,7 +109,7 @@ export default function MapScreen() {
                                     }}
                                     title={item.name}
                                     description={item.address}
-                                    pinColor="red"
+                                    pinColor="#9d674d"
                                 />
                             ))}
                     </MapView>
