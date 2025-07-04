@@ -1,17 +1,33 @@
-import React, {useContext} from 'react';
-import {View, Text, Switch, StyleSheet} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {View, Text, Switch, StyleSheet, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
+import {useNavigation} from '@react-navigation/native';
+import { authenticateWithBiometrics } from '../components/Biometrics';
 import {ThemeContext} from '../components/ThemeContext';
 import NavBar from "../components/NavBar";
 
 export default function SettingsScreen() {
     const {isDarkMode, toggleTheme} = useContext(ThemeContext);
     const styles = getStyles(isDarkMode);
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const checkBiometrics = async () => {
+            const success = await authenticateWithBiometrics();
+            if (!success) {
+                Alert.alert(
+                    'Toegang geweigerd',
+                    'Je hebt je niet kunnen authenticeren.',
+                    [{text: 'OK', onPress: () => navigation.navigate('Home')}]
+                );
+            }
+        };
+
+        checkBiometrics();
+    }, []);
 
     return (
         <SafeAreaView style={{flex: 1}}>
-
             <View style={styles.container}>
                 <View style={styles.row}>
                     <Text style={styles.label}>Donkere modus</Text>
@@ -23,8 +39,7 @@ export default function SettingsScreen() {
                     />
                 </View>
             </View>
-            <NavBar/>
-
+            <NavBar />
         </SafeAreaView>
     );
 }
