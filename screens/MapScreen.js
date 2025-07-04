@@ -143,13 +143,9 @@ const getStyles = (isDarkMode) => StyleSheet.create({
     },
     headerContainer: {
         position: 'absolute',
-        top: 40,
-        left: 16,
+        bottom: 100,
         right: 16,
         zIndex: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
     },
     headerButton: {
         backgroundColor: isDarkMode ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)',
