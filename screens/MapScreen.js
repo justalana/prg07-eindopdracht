@@ -1,12 +1,16 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { useNavigation, useRoute } from "@react-navigation/native";
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
-import NavBar from "../components/NavBar";
+
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { LibrariesContext } from '../components/Libraries';
 import Icon from 'react-native-vector-icons/Feather';
-import { useNavigation, useRoute } from "@react-navigation/native";
+
+import NavBar from "../components/NavBar";
+import { LibrariesContext } from '../components/Libraries';
+import { ThemeContext } from '../components/ThemeContext';
+import darkMapStyle from '../styles/darkMapStyle';
 
 export default function MapScreen() {
     const navigation = useNavigation();
@@ -18,6 +22,9 @@ export default function MapScreen() {
     const [errorMsg, setErrorMsg] = useState(null);
     const { libraries } = useContext(LibrariesContext)
     const watchId = useRef();
+
+    const { isDarkMode } = useContext(ThemeContext);
+    const styles = getStyles(isDarkMode);
 
     useEffect(() => {
         if (route.params?.selectedLibrary && initialRegion && mapRef.current) {
@@ -93,7 +100,9 @@ export default function MapScreen() {
                             showsUserLocation={true}
                             followsUserLocation={true}
                             initialRegion={initialRegion}
+                            customMapStyle={isDarkMode ? darkMapStyle : []}
                         >
+
 
                     {libraries.length > 0 &&
                             libraries.map((item) => (
@@ -105,7 +114,7 @@ export default function MapScreen() {
                                     }}
                                     title={item.name}
                                     description={item.address}
-                                    pinColor="#9d674d"
+                                    pinColor= {isDarkMode ? '#79a78b' : "#9d674d"}
                                 />
                             ))}
                     </MapView>
@@ -121,10 +130,10 @@ export default function MapScreen() {
 
 }
 
-const styles = StyleSheet.create({
+const getStyles = (isDarkMode) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: isDarkMode ? '#1d140d' : '#ede2d8',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -143,12 +152,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerButton: {
-        backgroundColor: 'rgba(255,255,255,0.9)',
+        backgroundColor: isDarkMode ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)',
         borderRadius: 8,
         padding: 8,
         flexDirection: 'row',
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: '#1d140d',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -157,7 +166,11 @@ const styles = StyleSheet.create({
     headerButtonText: {
         marginLeft: 6,
         fontSize: 16,
-        color: '#1d140d',
+        color: isDarkMode ? '#ede2d8' : '#1d140d',
         fontWeight: '500',
     },
+    loadingText: {
+        color: isDarkMode ? '#ede2d8' : '#1d140d',
+    },
 });
+
